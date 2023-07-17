@@ -1,0 +1,63 @@
+///Duplication
+string $GrpN;
+string $selectedGroup[] = `ls -sl -type "transform"`;
+
+if (size($selectedGroup) > 0) {
+    $GrpN = $selectedGroup[0];
+    print("Selected group name: " + $groupName + "\n");
+} else {
+    warning("No group selected.\n");
+}
+
+//string $GrpN = "spi_JT";
+
+string $groupName = $GrpN;
+string $jointList[] = `ls -dag -type joint $groupName`;
+int $jointCount = size($jointList);
+
+
+int $totalJTN = $jointCount;
+int $lpt = $totalJTN + 1;
+string $obj;
+
+string $originJoint = $GrpN + "_";
+select -r $GrpN;
+
+for ($s = 1; $s < $lpt; $s++)
+{
+    $obj = $originJoint + $s;
+    select -add $obj;
+}
+
+duplicate -rr;
+
+searchReplaceNames "JT" "JT_clone" "selected";
+
+
+
+string $TempGrp = $GrpN + "_clone1";
+
+
+string $cloneJoint = $GrpN + "_clone";
+
+
+
+
+for ($i = 2; $i < $lpt; $i++) 
+{
+ string $nums = $i - 1;
+ string $oji = $originJoint + $i;
+ string $cji = $cloneJoint + "_" + $nums ;
+ 
+    parent  $oji $cji;
+ parent $cji $GrpN;
+}
+
+
+
+//string $extraClone = $cloneJoint + "_" + $totalJTN;
+//delete $extraClone;
+
+
+
+delete  $TempGrp;
