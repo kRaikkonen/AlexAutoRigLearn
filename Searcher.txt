@@ -1,0 +1,56 @@
+string $selectedObjects[] = `ls -sl`;
+
+if (size($selectedObjects) == 0) {
+    string $message = Please Select A Group First;
+    string $title = Error;
+
+confirmDialog -title $title -message $message -button OK;
+
+} 
+else {
+    
+
+
+string $selectedGroup[] = `ls -sl -type transform`;
+
+if (size($selectedGroup)  0) {
+    string $groupName = $selectedGroup[0];
+    print(Selected group name  + $groupName + n);
+} else {
+    warning(No group selected.n);
+}
+
+string $wantedName;
+string $result = `promptDialog
+                        -title Searching
+                        -message Enter PartialEntire of the Wanted Names
+                        -button OK -button Cancel
+                        -defaultButton OK -cancelButton Cancel
+                        -dismissString Cancel`;
+
+    if ($result == OK) 
+    {
+        $wantedName = `promptDialog -query -text`;
+        
+    }
+
+ 获取组中所有的物体
+string $groupObjects[] = `ls -dag -type transform $groupName`;
+
+ 存储包含 xxx 的物体
+string $SearchObjects[];
+
+ 遍历组中的物体，筛选包含 xxx 的物体
+for ($i = 0; $i  size($groupObjects); $i++) {
+    string $object = $groupObjects[$i];
+    
+    if (`gmatch $object $wantedName`) {
+        $SearchObjects[size($SearchObjects)] = $object;
+    }
+}
+
+ 选中包含 xxx 的物体
+select -r $SearchObjects;
+
+}
+

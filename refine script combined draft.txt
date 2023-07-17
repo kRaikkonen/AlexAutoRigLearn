@@ -1,0 +1,186 @@
+
+//Namings
+
+
+string $jointChain[] = `ls -sl -type joint`;  // 获取选中的关节链
+
+
+int $numJoints = size($jointChain);  // 关节链中的关节数量
+
+string $baseName = "CP_3_JT";  // 重命名的基础名称
+
+for ($i = 0; $i < $numJoints; $i++) {
+    string $newName = $baseName + "_"+ ($i + 1);  // 构建新的名称
+    rename $jointChain[$i] $newName;  // 重命名关节
+}
+
+
+
+string $gpn = `ls -sl -type group`;
+rename $baseName;
+
+
+///Duplication
+
+///Duplication
+
+
+for ($z = 1; $z < 12; $z++){
+string $GrpN = "R_SC"+ $z+" _JT";
+
+string $groupName = $GrpN;
+string $jointList[] = `ls -dag -type joint $groupName`;
+int $jointCount = size($jointList);
+
+
+int $totalJTN = $jointCount;
+int $lpt = $totalJTN + 1;
+string $obj;
+
+string $originJoint = $GrpN + "_";
+select -r $GrpN;
+
+for ($s = 1; $s < $lpt; $s++)
+{
+    $obj = $originJoint + $s;
+    select -add $obj;
+}
+
+duplicate -rr;
+
+searchReplaceNames "JT" "JT_clone" "selected";
+
+
+
+string $TempGrp = $GrpN + "_clone1";
+
+
+string $cloneJoint = $GrpN + "_clone";
+
+
+
+
+for ($i = 2; $i < $lpt; $i++) 
+{
+ string $nums = $i - 1;
+ string $oji = $originJoint + $i;
+ string $cji = $cloneJoint + "_" + $nums ;
+ 
+    parent  $oji $cji;
+ parent $cji $GrpN;
+}
+
+
+
+delete  $TempGrp;
+
+}
+
+
+
+
+
+
+
+
+// collision, ikHandles
+
+
+
+
+__________________________________________________________________________________________________________
+
+for ($n = 1; $n < 12 ; $n++) {
+string $GrpN = "R_SC" + $n + "_JT";
+
+string $groupName = $GrpN;
+string $jointList[] = `ls -dag -type joint $groupName`;
+int $jointCount = size($jointList);
+
+
+
+int $totalJTN = $jointCount/2 ;
+
+
+
+//________________________________ USER DEFINE ABOVE __________________________________________
+
+
+
+string $GrpNCL = $GrpN + "_clone_";
+string $GCI;
+int $lpt = $totalJTN +1 ;
+
+string $GLoc;
+string $Loc;
+string $OJ;
+string $ikname;
+int $ikpi;
+string $KO;
+string $KOG;
+
+for ($i = 1; $i < $totalJTN ; $i++) {
+    
+    $GLoc = $GrpN+"_"+$i+"_Loc";
+    $GCI = $GrpNCL + $i;
+    
+    parent $GCI $GLoc;
+    
+    
+}
+
+
+for ($i = 2; $i < $lpt; $i++) {
+    
+    $ikpi = $i-1;
+    $Loc = $GrpN+"_"+$ikpi+"_Loc";
+    $OJ = $GrpN+"_"+$i;
+    $GCI = $GrpNCL + $ikpi;
+    $GLoc = $GrpN+"_"+$i+"_Loc";
+    $ikname = $OJ + "_IKS";
+    
+    
+    
+    ikHandle -sol "ikRPsolver" -sj $GCI -ee  $OJ -name $ikname;
+    parent $ikname $Loc;
+
+    
+    $RN = $OJ + "_KO";
+    select -r $OJ;
+    cMuscle_rigKeepOutSel();
+    
+    $KO = $GrpN + "_"+$i+"_KO";
+    $KOG= $GrpN + "_"+$i + "Driven";
+    rename "cMuscleKeepOut103" $KO;
+    rename "cMuscleKeepOut103Driven" $KOG;
+    
+    parent $KO $Loc;
+    parent $ikname $KOG;
+   
+    select -r $OJ;
+    select -add $GLoc;
+    pointConstraint -offset 0 0 0 -weight 1;
+    
+}
+}
+
+
+string $groupName = "group4";
+
+// 获取组中所有的物体
+string $groupObjects[] = `ls -dag -type transform $groupName`;
+
+// 存储包含 "_clone_" 的物体
+string $cloneObjects[];
+
+// 遍历组中的物体，筛选包含 "_clone_" 的物体
+for ($i = 0; $i < size($groupObjects); $i++) {
+    string $object = $groupObjects[$i];
+    
+    if (`gmatch $object "*_clone_*"`) {
+        $cloneObjects[size($cloneObjects)] = $object;
+    }
+}
+
+// 选中包含 "_clone_" 的物体
+select -r $cloneObjects;

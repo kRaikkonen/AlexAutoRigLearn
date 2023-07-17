@@ -1,0 +1,29 @@
+select -hi `ls -sl -type joint`;
+
+string $selectedJoints[] = `ls -selection -type "joint"`;
+
+if (size($selectedJoints) == 0) {
+    warning "Please select one or more joints.";
+} else {
+    for ($joint in $selectedJoints) {
+       string $locName =  $joint + "_Loc";
+       string $groupName = ($locName + "_off_grp");
+   
+      $locator = `spaceLocator -name  $locName `;
+      string $group = `group -empty -name $groupName`;
+      parent $locator $group;
+      
+      
+           
+    
+      select $joint;
+      select -add $groupName ;
+      doCreateParentConstraintArgList 1 { "0","0","0","0","0","0","0","0","1","","1" };
+      parentConstraint -weight 1;
+      
+      string $ConstName = $groupName + "_parentConstraint1";
+            
+      select -r $ConstName ; 
+      delete;                 
+    }
+}

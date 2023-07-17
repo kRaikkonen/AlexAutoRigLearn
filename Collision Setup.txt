@@ -1,0 +1,134 @@
+
+
+
+string $selectedGroup[] = `ls -sl -type "transform"`;
+
+if (size($selectedGroup) > 0) {
+    string $GrpN = $selectedGroup[0];
+    print("Selected group name: " + $groupName + "\n");
+} else {
+    warning("No group selected.\n");
+}
+
+
+
+
+string $objectPrefix = "cMuscleKeepOut";
+int $count = 0;
+string $objects[] = `ls ($objectPrefix + "*")`;
+string $newRigKoNum;
+string $newRigKoNumD;
+int $ct = size($objects);
+
+    
+    if (size($objects) > 0) {
+        
+        print("Objects starting with " + $objectPrefix + " exist, total of" + $ct);
+       string $result = `promptDialog
+                        -title "cMuscleKeepOut1 Exist!"
+                        -message "Enter the lates cMuscleKeepOut NUM:"                                             
+                        -button "OK" -button "Cancel"
+                        -defaultButton "OK" -cancelButton "Cancel"
+                        -dismissString "Cancel"`;
+
+			if ($result == "OK") 
+			{
+					if (`promptDialog -query -text` == "") 
+					{
+			string $message = "Please Select A Group First";
+			string $title = "Error";
+			confirmDialog -title $title -message $message -button "OK";
+
+				} 
+				else {
+			
+				 $newRigKoNum = "cMuscleKeepOut" + `promptDialog -query -text`;
+				 $newRigKoNumD =  $newRigKoNum +"Driven";        
+				}
+			}
+			}
+	else
+	{
+	$newRigKoNum = "cMuscleKeepOut1";
+	$newRigKoNumD =  $newRigKoNum +"Driven";   
+	}
+	
+
+string $groupName = $GrpN;
+string $jointList[] = `ls -dag -type joint $groupName`;
+int $jointCount = size($jointList);
+
+
+
+int $totalJTN = $jointCount/2 ;
+
+
+
+
+
+
+string $GrpNCL = $GrpN + "_clone_";
+string $GCI;
+int $lpt = $totalJTN +1 ;
+
+string $GLoc;
+string $Loc;
+string $OJ;
+string $ikname;
+int $ikpi;
+string $KO;
+string $KOG;
+
+for ($i = 1; $i < $totalJTN ; $i++) {
+    
+    $GLoc = $GrpN+"_"+$i+"_Loc";
+    $GCI = $GrpNCL + $i;
+    
+    parent $GCI $GLoc;
+    
+    
+}
+
+
+for ($i = 2; $i < $lpt; $i++) {
+    
+    $ikpi = $i-1;
+    $Loc = $GrpN+"_"+$ikpi+"_Loc";
+    $OJ = $GrpN+"_"+$i;
+    $GCI = $GrpNCL + $ikpi;
+    $GLoc = $GrpN+"_"+$i+"_Loc";
+    $ikname = $OJ + "_IKS";
+    
+    
+    
+    ikHandle -sol "ikRPsolver" -sj $GCI -ee  $OJ -name $ikname;
+    parent $ikname $Loc;
+
+    
+    $RN = $OJ + "_KO";
+    select -r $OJ;
+    
+       
+
+    cMuscle_rigKeepOutSel();
+    
+    $KO = $GrpN + "_"+$i+"_KO";
+    $KOG= $GrpN + "_"+$i + "Driven";
+    
+    
+  
+    rename $newRigKoNum $KO;
+    rename $newRigKoNumD $KOG;
+    
+    parent $KO $Loc;
+    parent $ikname $KOG;
+   
+    select -r $OJ;
+    select -add $GLoc;
+    pointConstraint -offset 0 0 0 -weight 1;
+        }    
+    
+    
+   
+    
+

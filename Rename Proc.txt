@@ -1,0 +1,94 @@
+select -hi `ls -sl -type joint`;
+
+global proc nr_RenameUI()
+{
+    string $RenamingGroupName;
+       
+    string $result = `promptDialog
+                        -title "Group Content Renaming"
+                        -message "Enter Desired Name Format:"
+                        -button "OK" -button "Cancel"
+                        -defaultButton "OK" -cancelButton "Cancel"
+                        -dismissString "Cancel"`;
+
+    
+    if ($result == "OK") 
+    {
+        $RenamingGroupName = `promptDialog -query -text`+"_JT";
+    }
+    
+    
+
+    nr_Rename($RenamingGroupName);   
+    
+    
+
+    
+    
+    
+}
+
+
+
+
+//------------------------------
+
+
+
+global proc nr_Rename(string $RenamingGroupName)
+{
+    
+//Namings
+
+
+string $jointChain[] = `ls -sl -type joint`;  // 获取选中的关节链
+
+
+
+                        
+  
+
+
+int $numJoints = size($jointChain);  // 关节链中的关节数量
+
+string $baseName = $RenamingGroupName ;  // 重命名的基础名称
+
+
+
+
+
+ string $result = `confirmDialog
+                        -title "Grouping Option"
+                        -message "Do you want to group the joint chain? You must group if you want to set up cloth dynamics."
+                        -button "OK" -button "Cancel"
+                        -defaultButton "OK" -cancelButton "Cancel"
+                        -dismissString "Cancel"`;
+
+    if ($result == "OK")
+    {
+        string $group = `group -name $baseName $jointChain[0]`;
+        print("Joint chain grouped under: " + $group + "\n");
+    }
+
+
+
+
+
+for ($i = 0; $i < $numJoints; $i++) {
+    string $newName = $baseName + "_"+ ($i + 1);  // 构建新的名称
+    rename $jointChain[$i] $newName;  // 重命名关节
+}
+   
+
+
+
+
+   return;
+
+}
+
+
+
+
+
+nr_RenameUI();
