@@ -297,4 +297,25 @@ def createLegs(side):
 def setColor4Loc():
     base.setAttr('Loc_Master.overrideEnable',1)
     base.setAttr('Loc_Master.overrideRGBColors',1)
+
+def mirrorLocators(side):
+    allLeftLocators = base.ls("Loc_L_*")
+    LeftLocators = base.listRelatives(*allLeftLocators, p=True, f=True)
     
+    allRightLocators = base.ls("Loc_R_*")
+    RightLocators = base.listRelatives(*allRightLocators, p=True, f=True)
+   
+    if side == 1:
+        for i,l in enumerate(LeftLocators):
+            pos = base.xform(l, q = True, t =True,ws = True)
+            base.move(-pos[0],pos[1],pos[2],RightLocators[i])
+    else:
+        for i,l in enumerate(RightLocators):
+            pos = base.xform(l, q = True, t =True,ws = True)
+            base.move(-pos[0],pos[1],pos[2],LeftLocators[i])
+        
+       
+    
+def deleteLocators():
+    nodes = base.ls("Loc_*")
+    base.delete(nodes)
