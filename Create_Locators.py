@@ -30,6 +30,9 @@ def createLocators():
     base.move(0, 1, 0, root)
     base.parent(root, "Loc_Master")
     createSpine()
+    
+def ReturnSpineAmount():
+   return base.intField(spineJointsCount, query=True, value=True)
 
 
 def createSpine():
@@ -41,14 +44,42 @@ def createSpine():
         else:
             base.parent(spine, 'Loc_SPINE_' + str(i - 1))
         base.move(0, 1.25 + (0.25 * i), 0, spine)
-
+    createHead()
+    
+    print(ReturnSpineAmount())
     createArms(1)
     createArms(-1)
     createLegs(1)
     createLegs(-1)
 
 
-
+def createHead():
+    neck = base.spaceLocator(n = 'Loc_Neck_Start')
+    base.parent(neck, 'Loc_SPINE_' + str(base.intField(spineJointsCount, query=True, value=True) - 1))
+    base.scale(1,1, 1, neck)
+    base.move(0,1.6 + (0.25 * (base.intField(spineJointsCount, query=True, value=True) - 1)), 0, neck) 
+    
+    neck = base.spaceLocator(n = 'Loc_Neck_End')
+    base.parent(neck, 'Loc_Neck_Start')
+    base.scale(1,1, 1, neck)
+    base.move(0,1.75 + (0.25 * (base.intField(spineJointsCount, query=True, value=True) - 1)), 0, neck) 
+    
+     
+    
+    head = base.spaceLocator(n = 'Loc_Head')
+    base.parent(head, 'Loc_Neck_End')
+    base.scale(1,1,1, head)
+    base.move(0, 2 + (0.25 * base.intField(spineJointsCount, query=True, value=True)),0, head)  
+    
+    ## jaw
+    jawEnd = base.spaceLocator(n = 'Loc_Jaw_End')
+    jawStart = base.spaceLocator(n = 'Loc_Jaw_Start')
+    base.parent(jawStart, 'Loc_Head')
+    base.parent(jawEnd, jawStart)
+    base.scale(1,1,1, jawEnd)
+    base.scale(0.5,0.5,0.5, jawStart)
+    base.move(0, 1.9 + (0.25 * base.intField(spineJointsCount, query=True, value=True)),0.02, jawStart)
+    base.move(0, 1.9 + (0.25 * base.intField(spineJointsCount, query=True, value=True)),0.15, jawEnd)
 
     
 
@@ -192,6 +223,34 @@ def createLegs(side):
         base.scale(0.1, 0.1, 0.1, L_upperLeg)
         base.move(0.15, 1, 0, L_upperLeg)
         base.parent(L_upperLeg, 'L_Leg_GRP')
+        
+        
+        ## lower leg
+        L_Knee = base.spaceLocator(n = 'Loc_L_Knee')
+        base.scale(0.1,0.1,0.1, L_Knee)
+        base.move(0.15,0.75, 0.05, L_Knee)
+        base.parent(L_Knee, 'Loc_L_UpperLeg')
+        
+        ## L_foot
+        L_foot = base.spaceLocator(n = 'Loc_L_Foot')
+        base.scale(0.1, 0.1, 0.1, L_foot)
+        base.move(0.15, 0.2, 0, L_foot)
+        base.parent(L_foot, 'Loc_L_Knee')
+        
+        ## L_ball
+        
+        L_ball = base.spaceLocator(n = 'Loc_L_Ball')
+        base.scale(0.1,0.1,0.1, L_ball)
+        base.move(0.15, 0, 0.15, L_ball)
+        base.parent(L_ball, 'Loc_L_Foot')
+        
+        ## toes
+        
+        toes = base.spaceLocator(n = 'Loc_L_Toes')
+        base.scale(0.1,0.1,0.1, toes)
+        base.move(0.15, 0, 0.3, toes)
+        base.parent(toes, 'Loc_L_Ball')
+        
 
     else:
         if base.objExists('Loc_R_Grp'):
@@ -205,3 +264,31 @@ def createLegs(side):
         base.scale(0.1, 0.1, 0.1, R_upperLeg)
         base.move(-0.15, 1, 0, R_upperLeg)
         base.parent(R_upperLeg, 'R_Leg_GRP')
+        
+        
+        
+         ## lower leg
+        R_Knee = base.spaceLocator(n = 'Loc_R_Knee')
+        base.scale(0.1,0.1,0.1, R_Knee)
+        base.move(-0.15,0.75, 0.05, R_Knee)
+        base.parent(R_Knee, 'Loc_R_UpperLeg')
+        
+        ## R_foot
+        R_foot = base.spaceLocator(n = 'Loc_R_Foot')
+        base.scale(0.1, 0.1, 0.1, R_foot)
+        base.move(-0.15, 0.2, 0, R_foot)
+        base.parent(R_foot, 'Loc_R_Knee')
+        
+        ## R_ball
+        
+        R_ball = base.spaceLocator(n = 'Loc_R_Ball')
+        base.scale(0.1,0.1,0.1, R_ball)
+        base.move(-0.15, 0, 0.15, R_ball)
+        base.parent(R_ball, 'Loc_R_Foot')
+        
+        ## toes
+        
+        toes = base.spaceLocator(n = 'Loc_R_Toes')
+        base.scale(0.1,0.1,0.1, toes)
+        base.move(-0.15, 0, 0.3, toes)
+        base.parent(toes, 'Loc_R_Ball')
