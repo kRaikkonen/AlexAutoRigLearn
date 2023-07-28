@@ -292,3 +292,9 @@ def createLegs(side):
         base.scale(0.1,0.1,0.1, toes)
         base.move(-0.15, 0, 0.3, toes)
         base.parent(toes, 'Loc_R_Ball')
+
+
+def setColor4Loc():
+    base.setAttr('Loc_Master.overrideEnable',1)
+    base.setAttr('Loc_Master.overrideRGBColors',1)
+    
