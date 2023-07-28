@@ -3,19 +3,17 @@ import maya.cmds as base
 
 
 
-
-
+global spineJointsCount
+global fingerCount
 
 def createField():
+    global spineJointsCount  # 使用 global 声明为全局变量
     base.text("Spine Joints Count", l="Spine Joints Count")
     spineJointsCount = base.intField(minValue=1, maxValue=10, value=4)
 
-    base.text("Finger Amount",l = "Fingers Amount")
-    fingerCount = base.intField(minValue = 1, maxValue = 10, value = 5)
-
-##base.button(l="Edit Mode", w=200, c="lockAll(editMode)")    
-
-
+    global fingerCount  # 使用 global 声明为全局变量
+    base.text("Finger Amount", l="Fingers Amount")
+    fingerCount = base.intField(minValue=1, maxValue=10, value=5)
 
 
 
