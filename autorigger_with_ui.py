@@ -1,8 +1,10 @@
 import maya.cmds as base
-import importlib
+
 import Create_Locators
 import Create_Joints
 import Create_Constraints
+
+import importlib
 
 
 Create_Locators = importlib.reload(Create_Locators)
@@ -35,7 +37,7 @@ class AutoRigger():
         base.button(l="Delete Locators", w=200, c="Create_Locators.deleteLocators()")
         base.button(l="Mirror L -> R", w=200, c="Create_Locators.mirrorLocators(1)")
         base.button(l="Mirror R -> L", w=200, c="Create_Locators.mirrorLocators(-1)")
-        base.button(l="Create Joints", w=200, c="Create_Joints.createJoints()")     
+        base.button(l="Create Joints", w=200, c="Create_Joints.CreateJointWindows()")     
       
         base.button(l="Create Constraint", w=200, c="Create_Constraints.createConstraint()")
         base.separator()
@@ -50,7 +52,5 @@ class AutoRigger():
     
     
     
-    
-
-                
+AutoRigger()
   

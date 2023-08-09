@@ -33,6 +33,10 @@ def createLocators():
     
 def ReturnSpineAmount():
    return base.intField(spineJointsCount, query=True, value=True)
+   
+def ReturnFingersAmount():
+   return base.intField(spineJointsCount, query=True, value=True)
+
 
 
 def createSpine():
@@ -93,6 +97,12 @@ def createArms(side):
             L_arm = base.group(em=True, name='L_Arm_GRP')
             base.parent(L_arm, 'Loc_SPINE_' + str(base.intField(spineJointsCount, query=True, value=True) - 1))
             
+            L_clavicle = base.spaceLocator(n = 'Loc_L_Clavicle')
+            base.scale(0.1,0.1,0.1, L_clavicle)
+            base.parent(L_clavicle, 'Loc_SPINE_' + str(base.intField(spineJointsCount, query=True, value=True) - 1))
+            base.move(0.1 * side, 1 + (0.25 * base.intField(spineJointsCount, query=True, value=True)), 0.1, L_clavicle)
+            
+            
             #Create L_UpperArm
             L_upperArm = base.spaceLocator( n = 'Loc_L_UpperArm')
             base.scale(0.1,0.1,0.1, L_upperArm)
@@ -128,6 +138,11 @@ def createArms(side):
         else:
             R_arm = base.group(em=True, name='R_Arm_GRP')
             base.parent(R_arm, 'Loc_SPINE_' + str(base.intField(spineJointsCount, query=True, value=True) - 1))
+            
+            R_clavicle = base.spaceLocator(n = 'Loc_R_Clavicle')
+            base.scale(0.1,0.1,0.1, R_clavicle)
+            base.parent(R_clavicle, 'Loc_SPINE_' + str(base.intField(spineJointsCount, query=True, value=True) - 1))
+            base.move(0.1 * side, 1 + (0.25 * base.intField(spineJointsCount, query=True, value=True)), 0.1, R_clavicle)
             
             
             #Create R_UpperArm
