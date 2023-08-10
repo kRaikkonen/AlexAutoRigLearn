@@ -7,11 +7,11 @@ global spineJointsCount
 global fingerCount
 
 def createField():
-    global spineJointsCount  # 使用 global 声明为全局变量
+    global spineJointsCount  
     base.text("Spine Joints Count", l="Spine Joints Count")
     spineJointsCount = base.intField(minValue=1, maxValue=10, value=4)
 
-    global fingerCount  # 使用 global 声明为全局变量
+    global fingerCount  
     base.text("Finger Amount", l="Fingers Amount")
     fingerCount = base.intField(minValue=1, maxValue=10, value=5)
 
@@ -35,7 +35,7 @@ def ReturnSpineAmount():
    return base.intField(spineJointsCount, query=True, value=True)
    
 def ReturnFingersAmount():
-   return base.intField(spineJointsCount, query=True, value=True)
+   return base.intField(fingerCount, query=True, value=True)
 
 
 
