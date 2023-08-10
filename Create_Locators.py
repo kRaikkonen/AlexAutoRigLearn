@@ -96,6 +96,7 @@ def createArms(side):
         else:
             L_arm = base.group(em=True, name='L_Arm_GRP')
             base.parent(L_arm, 'Loc_SPINE_' + str(base.intField(spineJointsCount, query=True, value=True) - 1))
+            base.move(0, 1 + 0.25 * base.intField(spineJointsCount, query = True, value = True), 0, L_arm)
             
             L_clavicle = base.spaceLocator(n = 'Loc_L_Clavicle')
             base.scale(0.1,0.1,0.1, L_clavicle)
@@ -107,6 +108,7 @@ def createArms(side):
             L_upperArm = base.spaceLocator( n = 'Loc_L_UpperArm')
             base.scale(0.1,0.1,0.1, L_upperArm)
             base.parent(L_upperArm, L_arm)
+            base.move(0.35 * side, 1 + (0.25 * base.intField(spineJointsCount, query=True, value=True)), 0, L_upperArm)
             
             #Create L_Elbow
             L_Elbow = base.spaceLocator( n = 'Loc_L_Elbow')
@@ -120,7 +122,7 @@ def createArms(side):
             
             
             
-            base.move(0.35 * side, 1 + 0.25 * base.intField(spineJointsCount, query = True, value = True), 0, L_arm)
+            
             base.move(0.6 * side, 1.4, -0.2, L_Elbow)
             base.move(0.8 * side, 1, 0, L_Wrist)
             
@@ -138,6 +140,7 @@ def createArms(side):
         else:
             R_arm = base.group(em=True, name='R_Arm_GRP')
             base.parent(R_arm, 'Loc_SPINE_' + str(base.intField(spineJointsCount, query=True, value=True) - 1))
+            base.move(0, 1 + 0.25 * base.intField(spineJointsCount, query = True, value = True), 0, R_arm)
             
             R_clavicle = base.spaceLocator(n = 'Loc_R_Clavicle')
             base.scale(0.1,0.1,0.1, R_clavicle)
@@ -162,7 +165,7 @@ def createArms(side):
             
 
             #move upper arm
-            base.move(0.35 * side, 1 + 0.25 * base.intField(spineJointsCount, query = True, value = True), 0, R_arm)
+            
             base.move(0.6 * side, 1.4, -0.2, R_Elbow)
             base.move(0.8 * side, 1, 0, R_Wrist)
             
@@ -243,27 +246,27 @@ def createLegs(side):
         ## lower leg
         L_Knee = base.spaceLocator(n = 'Loc_L_Knee')
         base.scale(0.1,0.1,0.1, L_Knee)
-        base.move(0.15,0.75, 0.05, L_Knee)
+        base.move(0.15,0.2, 0.05, L_Knee)
         base.parent(L_Knee, 'Loc_L_UpperLeg')
         
         ## L_foot
         L_foot = base.spaceLocator(n = 'Loc_L_Foot')
         base.scale(0.1, 0.1, 0.1, L_foot)
-        base.move(0.15, 0.2, 0, L_foot)
+        base.move(0.15, -0.4, 0, L_foot)
         base.parent(L_foot, 'Loc_L_Knee')
         
         ## L_ball
         
         L_ball = base.spaceLocator(n = 'Loc_L_Ball')
         base.scale(0.1,0.1,0.1, L_ball)
-        base.move(0.15, 0, 0.15, L_ball)
+        base.move(0.15, -0.5, 0.15, L_ball)
         base.parent(L_ball, 'Loc_L_Foot')
         
         ## toes
         
         toes = base.spaceLocator(n = 'Loc_L_Toes')
         base.scale(0.1,0.1,0.1, toes)
-        base.move(0.15, 0, 0.3, toes)
+        base.move(0.15, -0.5, 0.3, toes)
         base.parent(toes, 'Loc_L_Ball')
         
 
@@ -282,30 +285,30 @@ def createLegs(side):
         
         
         
-         ## lower leg
+         ## Knee
         R_Knee = base.spaceLocator(n = 'Loc_R_Knee')
         base.scale(0.1,0.1,0.1, R_Knee)
-        base.move(-0.15,0.75, 0.05, R_Knee)
+        base.move(-0.15,0.2, 0.05, R_Knee)
         base.parent(R_Knee, 'Loc_R_UpperLeg')
         
         ## R_foot
         R_foot = base.spaceLocator(n = 'Loc_R_Foot')
         base.scale(0.1, 0.1, 0.1, R_foot)
-        base.move(-0.15, 0.2, 0, R_foot)
+        base.move(-0.15, -0.4, 0, R_foot)
         base.parent(R_foot, 'Loc_R_Knee')
         
         ## R_ball
         
         R_ball = base.spaceLocator(n = 'Loc_R_Ball')
         base.scale(0.1,0.1,0.1, R_ball)
-        base.move(-0.15, 0, 0.15, R_ball)
+        base.move(-0.15, -0.5, 0.15, R_ball)
         base.parent(R_ball, 'Loc_R_Foot')
         
         ## toes
         
         toes = base.spaceLocator(n = 'Loc_R_Toes')
         base.scale(0.1,0.1,0.1, toes)
-        base.move(-0.15, 0, 0.3, toes)
+        base.move(-0.15, -0.5, 0.3, toes)
         base.parent(toes, 'Loc_R_Ball')
 
 

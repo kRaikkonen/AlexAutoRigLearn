@@ -57,5 +57,5 @@ class AutoRigger():
     
     
     
-AutoRigger()
+##AutoRigger()
   
