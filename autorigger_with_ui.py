@@ -4,6 +4,7 @@ import Create_Locators
 import Create_Joints
 import Create_Constraints
 import Twist_Loc
+import CreateIKH
 
 
 import importlib
@@ -13,9 +14,10 @@ Create_Locators = importlib.reload(Create_Locators)
 Create_Joints = importlib.reload(Create_Joints)
 Create_Constraints = importlib.reload(Create_Constraints)
 Twist_Loc = importlib.reload(Twist_Loc)
+CreateIKH = importlib.reload(CreateIKH)
 
-
-
+global prefix
+global selected
 
 
 
@@ -39,8 +41,15 @@ class AutoRigger():
         
         base.button(l="Create Locators", w=200, c="Create_Locators.createLocators()")
         base.button(l="Delete Locators", w=200, c="Create_Locators.deleteLocators()")
+        base.separator()
+        base.separator()
+        Create_Locators.createField()
+        base.separator()
+        base.separator()
         base.button(l="Mirror L -> R", w=200, c="Create_Locators.mirrorLocators(1)")
         base.button(l="Mirror R -> L", w=200, c="Create_Locators.mirrorLocators(-1)")
+        base.separator()
+        base.separator()
         base.button(l="Joints Creation Menu", w=200, c="Create_Joints.CreateJointWindows()")
         base.button(l="Twist & Reverse Foot Menu", w=200, c="Twist_Loc.LimbTwistLocatorsCreation()")     
       
@@ -48,7 +57,7 @@ class AutoRigger():
         base.separator()
         base.separator()
         
-        Create_Locators.createField()
+        
         
         
         
@@ -57,5 +66,5 @@ class AutoRigger():
     
     
     
-##AutoRigger()
+AutoRigger()
   

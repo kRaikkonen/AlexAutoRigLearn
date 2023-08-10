@@ -243,34 +243,34 @@ def createLegs(side):
 
         L_upperLeg = base.spaceLocator(n='Loc_L_UpperLeg')
         base.scale(0.1, 0.1, 0.1, L_upperLeg)
-        base.move(0.15, 1, 0, L_upperLeg)
+        base.move(0.15, 1.5, 0, L_upperLeg)
         base.parent(L_upperLeg, 'L_Leg_GRP')
         
         
-        ## lower leg
+        ## L knee
         L_Knee = base.spaceLocator(n = 'Loc_L_Knee')
         base.scale(0.1,0.1,0.1, L_Knee)
-        base.move(0.15,0.2, 0.05, L_Knee)
+        base.move(0.15,0.75, 0.05, L_Knee)
         base.parent(L_Knee, 'Loc_L_UpperLeg')
         
         ## L_foot
         L_foot = base.spaceLocator(n = 'Loc_L_Foot')
         base.scale(0.1, 0.1, 0.1, L_foot)
-        base.move(0.15, -0.4, 0, L_foot)
+        base.move(0.15, 0.2, 0, L_foot)
         base.parent(L_foot, 'Loc_L_Knee')
         
         ## L_ball
         
         L_ball = base.spaceLocator(n = 'Loc_L_Ball')
         base.scale(0.1,0.1,0.1, L_ball)
-        base.move(0.15, -0.5, 0.15, L_ball)
+        base.move(0.15, 0, 0.15, L_ball)
         base.parent(L_ball, 'Loc_L_Foot')
         
         ## toes
         
         toes = base.spaceLocator(n = 'Loc_L_Toes')
         base.scale(0.1,0.1,0.1, toes)
-        base.move(0.15, -0.5, 0.3, toes)
+        base.move(0.15, 0, 0.3, toes)
         base.parent(toes, 'Loc_L_Ball')
         
 
@@ -284,7 +284,7 @@ def createLegs(side):
 
         R_upperLeg = base.spaceLocator(n='Loc_R_UpperLeg')
         base.scale(0.1, 0.1, 0.1, R_upperLeg)
-        base.move(-0.15, 1, 0, R_upperLeg)
+        base.move(-0.15, 1.5, 0, R_upperLeg)
         base.parent(R_upperLeg, 'R_Leg_GRP')
         
         
@@ -292,27 +292,27 @@ def createLegs(side):
          ## Knee
         R_Knee = base.spaceLocator(n = 'Loc_R_Knee')
         base.scale(0.1,0.1,0.1, R_Knee)
-        base.move(-0.15,0.2, 0.05, R_Knee)
+        base.move(-0.15,0.75, 0.05, R_Knee)
         base.parent(R_Knee, 'Loc_R_UpperLeg')
         
         ## R_foot
         R_foot = base.spaceLocator(n = 'Loc_R_Foot')
         base.scale(0.1, 0.1, 0.1, R_foot)
-        base.move(-0.15, -0.4, 0, R_foot)
+        base.move(-0.15, 0.2, 0, R_foot)
         base.parent(R_foot, 'Loc_R_Knee')
         
         ## R_ball
         
         R_ball = base.spaceLocator(n = 'Loc_R_Ball')
         base.scale(0.1,0.1,0.1, R_ball)
-        base.move(-0.15, -0.5, 0.15, R_ball)
+        base.move(-0.15, 0, 0.15, R_ball)
         base.parent(R_ball, 'Loc_R_Foot')
         
         ## toes
         
         toes = base.spaceLocator(n = 'Loc_R_Toes')
         base.scale(0.1,0.1,0.1, toes)
-        base.move(-0.15, -0.5, 0.3, toes)
+        base.move(-0.15, 0, 0.3, toes)
         base.parent(toes, 'Loc_R_Ball')
 
 

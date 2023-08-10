@@ -1,8 +1,13 @@
 import maya.cmds as base
 import importlib
+import CreateIKH
 import Create_Locators
 
-importlib.reload(Create_Locators)
+
+
+
+CreateIKH = importlib.reload(CreateIKH)
+Create_Locators = importlib.reload(Create_Locators)
 
 
 def CreateJointWindows():
@@ -15,6 +20,8 @@ def CreateJointWindows():
     base.button(l="Create Joints", w=200, c="Create_Joints.createJoints(Create_Locators.ReturnSpineAmount(), Create_Locators.ReturnFingersAmount())")
     base.button(l="Delete Joints", w=200, c="Create_Joints.deleteJoints()")
     base.button(l = "Set Orientation", w = 200, c = "Create_Joints.setJointOrientation()")
+    
+    base.button(l = "Create IK", w = 200, c = "CreateIKH.IKHandles()")
     
     base.showWindow()
 
