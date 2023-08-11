@@ -53,9 +53,14 @@ def createJoints(spineAmount,amount):
             j = base.joint(radius=0.08, p=pos, name="RIG_SPINE_" + str(i))
             
         createArmJoints(spineAmount)
+        if (base.objExists('Loc_L_INV_Heel*')):
+            createIneverseFootRoll()
+        else:
+            print ('')    
         createLegs()
         createHead(spineAmount)
         createFingerJoints(amount)
+        
         print (amount)    
             
             
@@ -107,7 +112,8 @@ def createLegs():
     
     L_upperLegJoint = base.joint(radius = 0.1, p = base.xform(base.ls('Loc_L_UpperLeg', type = 'transform'), q = True, t = True, ws = True), name = "RIG_L_UpperLeg")
     L_KneeJoint = base.joint(radius = 0.1, p = base.xform(base.ls('Loc_L_Knee'), q = True, t = True, ws = True), name = 'RIG_L_Knee')   
-    L_FootJoint = base.joint(radius = 0.1, p = base.xform(base.ls('Loc_L_Foot') , q = True, t = True, ws = True), name = 'RIG_L_Foot') 
+    L_FootJoint = base.joint(radius = 0.1, p = base.xform(base.ls('Loc_L_Foot') , q = True, t = True, ws = True), name = 'RIG_L_Foot')
+    L_BallJoint = base.joint(radius = 0.1, p = base.xform(base.ls('Loc_L_Ball'), q = True, t = True, ws = True)  , name = 'RIG_L_Ball') 
     L_ToeJoint = base.joint(radius = 0.1, p = base.xform(base.ls('Loc_L_Toes'), q = True, t = True, ws = True), name = 'RIG_L_Toes')
     
     ## R side
@@ -116,17 +122,23 @@ def createLegs():
     base.select('RIG_ROOT')
     R_upperLegJoint = base.joint(radius = 0.1, p = base.xform(base.ls('Loc_R_UpperLeg', type = 'transform'), q = True, t = True, ws = True), name = "RIG_R_UpperLeg")
     R_KneeJoint = base.joint(radius = 0.1, p = base.xform(base.ls('Loc_R_Knee'), q = True, t = True, ws = True), name = 'RIG_R_Knee')  
-    R_FootJoint = base.joint(radius = 0.1, p = base.xform(base.ls('Loc_R_Foot'), q = True, t = True, ws = True)  , name = 'RIG_R_Foot') 
+    R_FootJoint = base.joint(radius = 0.1, p = base.xform(base.ls('Loc_R_Foot'), q = True, t = True, ws = True)  , name = 'RIG_R_Foot')
+    R_BallJoint = base.joint(radius = 0.1, p = base.xform(base.ls('Loc_R_Ball'), q = True, t = True, ws = True)  , name = 'RIG_R_Ball')
     R_ToeJoint = base.joint(radius = 0.1, p = base.xform(base.ls('Loc_R_Toes'), q = True, t = True, ws = True), name = 'RIG_R_Toes')
 
 
 def createIneverseFootRoll():
+    
+    
     base.select(deselect = True)
+
     L_heel = base.joint(radius = 0.1, p = base.xform(base.ls('Loc_L_INV_Heel', type = 'transform'), q = True, t = True, ws = True), name = 'RIG_L_INV_Heel')
     L_toel = base.joint(radius = 0.1, p = base.xform(base.ls('Loc_L_INV_Toes', type = 'transform'), q = True, t = True, ws = True), name = 'RIG_L_INV_Toes')
     L_ball = base.joint(radius = 0.1, p = base.xform(base.ls('Loc_L_INV_Ball', type = 'transform'), q = True, t = True, ws = True), name = 'RIG_L_INV_Ball')
     L_ankle = base.joint(radius = 0.1, p = base.xform(base.ls('Loc_L_INV_Ankle', type = 'transform'), q = True, t = True, ws = True), name = 'RIG_L_INV_Ankle')
     base.parent(L_heel, 'RIG')
+    
+    
     base.select(deselect = True)
     R_heel = base.joint(radius = 0.1, p = base.xform(base.ls('Loc_R_INV_Heel', type = 'transform'), q = True, t = True, ws = True), name = 'RIG_R_INV_Heel')
     R_toel = base.joint(radius = 0.1, p = base.xform(base.ls('Loc_R_INV_Toes', type = 'transform'), q = True, t = True, ws = True), name = 'RIG_R_INV_Toes')

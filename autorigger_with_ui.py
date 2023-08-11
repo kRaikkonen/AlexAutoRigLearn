@@ -5,6 +5,7 @@ import Create_Joints
 import Create_Constraints
 import Twist_Loc
 import CreateIKH
+import Controllers
 
 
 import importlib
@@ -15,6 +16,8 @@ Create_Joints = importlib.reload(Create_Joints)
 Create_Constraints = importlib.reload(Create_Constraints)
 Twist_Loc = importlib.reload(Twist_Loc)
 CreateIKH = importlib.reload(CreateIKH)
+Controllers = importlib.reload(Controllers)
+
 
 global prefix
 global selected
@@ -54,6 +57,7 @@ class AutoRigger():
         base.button(l="Twist & Reverse Foot Menu", w=200, c="Twist_Loc.LimbTwistLocatorsCreation()")     
       
         base.button(l="Create Constraint", w=200, c="Create_Constraints.createConstraint()")
+        base.button(l="Create Controllers", w=200, c="Controllers.CreateController()")
         base.separator()
         base.separator()
         
@@ -66,5 +70,5 @@ class AutoRigger():
     
     
     
-AutoRigger()
+#AutoRigger()
   
