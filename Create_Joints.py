@@ -191,7 +191,7 @@ def createFinger(i):
     for y, g in enumerate(r_allFingers):
         
         r_pos = base.xform(g, q = True, t = True, ws = True)
-        r_j = base.joint(radius = 0.1, p = r_pos, name = "RIG_L_Finger_"+str(i)+"_"+str(y))    
+        r_j = base.joint(radius = 0.1, p = r_pos, name = "RIG_R_Finger_"+str(i)+"_"+str(y))    
         
 
 

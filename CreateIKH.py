@@ -25,11 +25,11 @@ def IKHandles():
     base.ikHandle(name="IK_L_Leg", sj=base.ls("RIG_L_UpperLeg")[0], ee=base.ls("RIG_L_Foot")[0], sol='ikRPsolver')
     base.ikHandle(name="IK_R_Leg", sj=base.ls("RIG_R_UpperLeg")[0], ee=base.ls("RIG_R_Foot")[0], sol='ikRPsolver')
     
-    base.ikHandle(name="IK_L_Ball", sj=base.ls("RIG_R_Foot")[0], ee=base.ls("RIG_R_Foot")[0], sol='ikSCsolver')
-    base.ikHandle(name="IK_R_Ball", sj=base.ls("RIG_R_Foot")[0], ee=base.ls("RIG_R_Foot")[0], sol='ikSCsolver')
+    base.ikHandle(name="IK_L_Ball", sj=base.ls("RIG_R_Foot")[0], ee=base.ls("RIG_R_Ball")[0], sol='ikSCsolver')
+    base.ikHandle(name="IK_R_Ball", sj=base.ls("RIG_R_Foot")[0], ee=base.ls("RIG_R_Ball")[0], sol='ikSCsolver')
 
-    base.ikHandle(name="IK_L_Toes", sj=base.ls("RIG_R_Ball")[0], ee=base.ls("RIG_R_Foot")[0], sol='ikSCsolver')
-    base.ikHandle(name="IK_R_Toes", sj=base.ls("RIG_R_Ball")[0], ee=base.ls("RIG_R_Foot")[0], sol='ikSCsolver')
+    base.ikHandle(name="IK_L_Toes", sj=base.ls("RIG_R_Ball")[0], ee=base.ls("RIG_R_Toes")[0], sol='ikSCsolver')
+    base.ikHandle(name="IK_R_Toes", sj=base.ls("RIG_R_Ball")[0], ee=base.ls("RIG_R_Toes")[0], sol='ikSCsolver')
 
 
 

@@ -36,28 +36,48 @@ class AutoRigger():
         
         base.window("Auto Rigger")
         
-        base.rowColumnLayout(nc=2)
+        base.rowColumnLayout(adj = True)
+        
+        base.text(l = "Step 1: Create Locator", w = 100)
+        base.separator()
+        
+        
+        base.text(l = "Amount of Spines", w = 100)
+        spineJointCount = base.intField(minValue = 1, maxValue = 10, value = 4)
+        spineValue = base.intField(spineJointCount, query = True, value = True)
+        base.text(l = "Amount of Fingers", w = 100)
+        fingerCount = base.intField(minValue = 0, maxValue = 10, value = 5)
         
         
         
-        
-        
-        base.button(l="Create Locators", w=200, c="Create_Locators.createLocators()")
+        base.button(l="Create Locators", w=200, c="Create_Locators.createLocators("+ str(base.intField(spineJointCount, query = True, value = True))+","+str(base.intField(fingerCount, query = True, value = True))+")")
         base.button(l="Delete Locators", w=200, c="Create_Locators.deleteLocators()")
+      
+        ##Create_Locators.createField()
+        
+        
         base.separator()
         base.separator()
-        Create_Locators.createField()
-        base.separator()
-        base.separator()
+  
+  
+        base.text(l = "Step 2: Twist & Mirroring", w = 100)
+        base.button(l="Twist & Reverse Foot Locator Menu", w=200, c="Twist_Loc.LimbTwistLocatorsCreation()") 
         base.button(l="Mirror L -> R", w=200, c="Create_Locators.mirrorLocators(1)")
         base.button(l="Mirror R -> L", w=200, c="Create_Locators.mirrorLocators(-1)")
         base.separator()
         base.separator()
+        
+        base.text(l = "Step 3: Create Joints", w = 100)
+        base.separator()
         base.button(l="Joints Creation Menu", w=200, c="Create_Joints.CreateJointWindows()")
-        base.button(l="Twist & Reverse Foot Menu", w=200, c="Twist_Loc.LimbTwistLocatorsCreation()")     
+        
+        base.separator()
+        base.separator()    
       
+        base.text(l = "Step 4: Control and Constraint", w = 100)
+        base.button(l="Create Controllers", w=200, c="Controllers.CreateController("+ str(base.intField(spineJointCount, query = True, value = True))+","+str(base.intField(fingerCount, query = True, value = True))+")")
+        
         base.button(l="Create Constraint", w=200, c="Create_Constraints.createConstraint()")
-        base.button(l="Create Controllers", w=200, c="Controllers.CreateController()")
         base.separator()
         base.separator()
         
@@ -70,5 +90,5 @@ class AutoRigger():
     
     
     
-#AutoRigger()
+AutoRigger()
   

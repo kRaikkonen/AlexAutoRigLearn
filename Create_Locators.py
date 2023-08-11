@@ -3,23 +3,23 @@ import maya.cmds as base
 
 
 
-global spineJointsCount
-global fingerCount
-
-def createField():
-    global spineJointsCount  
-    base.text("Spine Joints Count", l="Spine Joints Count")
-    spineJointsCount = base.intField(minValue=1, maxValue=10, value=4)
-
-    global fingerCount  
-    base.text("Finger Amount", l="Fingers Amount")
-    fingerCount = base.intField(minValue=1, maxValue=10, value=5)
 
 
 
 
 
-def createLocators():
+def createLocators(spineValue, fingerValue):
+    
+    global spineJointCount
+    global fingerCount
+    
+    
+    spineJointCount = spineValue
+    fingerCount = fingerValue
+    
+    
+    
+    
     if base.objExists("Loc_Master"):
         print('Loc_Master already exists')
     else:
@@ -32,15 +32,14 @@ def createLocators():
     createSpine()
     
 def ReturnSpineAmount():
-   return base.intField(spineJointsCount, query=True, value=True)
+   return spineJointCount
    
 def ReturnFingersAmount():
-   return base.intField(fingerCount, query=True, value=True)
-
+   return fingerCount
 
 
 def createSpine():
-    for i in range(0, base.intField(spineJointsCount, query=True, value=True)):
+    for i in range(0, spineJointCount):
         spine = base.spaceLocator(n='Loc_SPINE_' + str(i))
         base.scale(0.1, 0.1, 0.1, spine)
         if i == 0:
@@ -59,24 +58,24 @@ def createSpine():
 
 def createHead():
     neck = base.spaceLocator(n = 'Loc_Neck_Start')
-    base.parent(neck, 'Loc_SPINE_' + str(base.intField(spineJointsCount, query=True, value=True) - 1))
+    base.parent(neck, 'Loc_SPINE_' + str(ReturnSpineAmount() - 1))
     base.scale(1,1, 1, neck)
-    base.move(0,1.6 + (0.25 * (base.intField(spineJointsCount, query=True, value=True))), 0, neck) 
+    base.move(0,1.6 + (0.25 * ReturnSpineAmount()), 0, neck) 
     
     neck = base.spaceLocator(n = 'Loc_Neck_End')
     base.parent(neck, 'Loc_Neck_Start')
     base.scale(1,1, 1, neck)
-    base.move(0,1.75 + (0.25 * (base.intField(spineJointsCount, query=True, value=True))), 0, neck) 
+    base.move(0,1.75 + (0.25 * ReturnSpineAmount()), 0, neck) 
     
     
-    print (0.25 * (base.intField(spineJointsCount, query=True, value=True)))
+    print (0.25 * ReturnSpineAmount())
     
      
     
     head = base.spaceLocator(n = 'Loc_Head')
     base.parent(head, 'Loc_Neck_End')
     base.scale(1,1,1, head)
-    base.move(0, 2 + (0.25 * base.intField(spineJointsCount, query=True, value=True)),0, head)  
+    base.move(0, 2 + (0.25 * ReturnSpineAmount()),0, head)  
     
     ## jaw
     jawEnd = base.spaceLocator(n = 'Loc_Jaw_End')
@@ -85,8 +84,8 @@ def createHead():
     base.parent(jawEnd, jawStart)
     base.scale(1,1,1, jawEnd)
     base.scale(0.5,0.5,0.5, jawStart)
-    base.move(0, 1.9 + (0.25 * base.intField(spineJointsCount, query=True, value=True)),0.02, jawStart)
-    base.move(0, 1.9 + (0.25 * base.intField(spineJointsCount, query=True, value=True)),0.15, jawEnd)
+    base.move(0, 1.9 + (0.25 * ReturnSpineAmount()),0.02, jawStart)
+    base.move(0, 1.9 + (0.25 * ReturnSpineAmount()),0.15, jawEnd)
 
     
 
@@ -98,20 +97,20 @@ def createArms(side):
             print('Left Arm already exists')
         else:
             L_arm = base.group(em=True, name='L_Arm_GRP')
-            base.parent(L_arm, 'Loc_SPINE_' + str(base.intField(spineJointsCount, query=True, value=True) - 1))
-            base.move(0, 1.5 + 0.25 * base.intField(spineJointsCount, query = True, value = True), 0, L_arm)
+            base.parent(L_arm, 'Loc_SPINE_' + str(ReturnSpineAmount() - 1))
+            base.move(0, 1.5 + 0.25 * ReturnSpineAmount(), 0, L_arm)
             
             L_clavicle = base.spaceLocator(n = 'Loc_L_Clavicle')
             base.scale(0.1,0.1,0.1, L_clavicle)
             base.parent(L_clavicle,  L_arm)
-            base.move(0.1 * side, 1.5 + (0.25 * base.intField(spineJointsCount, query=True, value=True)), 0.1, L_clavicle)
+            base.move(0.1 * side, 1.5 + (0.25 * ReturnSpineAmount()), 0.1, L_clavicle)
             
             
             #Create L_UpperArm
             L_upperArm = base.spaceLocator( n = 'Loc_L_UpperArm')
             base.scale(0.1,0.1,0.1, L_upperArm)
             base.parent(L_upperArm, L_clavicle)
-            base.move(0.35 * side, 1.5 + (0.25 * base.intField(spineJointsCount, query=True, value=True)), 0, L_upperArm)
+            base.move(0.35 * side, 1.5 + (0.25 * ReturnSpineAmount()), 0, L_upperArm)
             
             #Create L_Elbow
             L_Elbow = base.spaceLocator( n = 'Loc_L_Elbow')
@@ -143,13 +142,13 @@ def createArms(side):
             print('Right Arm already exists')
         else:
             R_arm = base.group(em=True, name='R_Arm_GRP')
-            base.parent(R_arm, 'Loc_SPINE_' + str(base.intField(spineJointsCount, query=True, value=True) - 1))
-            base.move(0, 1.5 + 0.25 * base.intField(spineJointsCount, query = True, value = True), 0, R_arm)
+            base.parent(R_arm, 'Loc_SPINE_' + str(ReturnSpineAmount() - 1))
+            base.move(0, 1.5 + 0.25 * ReturnSpineAmount(), 0, R_arm)
             
             R_clavicle = base.spaceLocator(n = 'Loc_R_Clavicle')
             base.scale(0.1,0.1,0.1, R_clavicle)
             base.parent(R_clavicle, R_arm)
-            base.move(0.1 * side, 1.5 + (0.25 * base.intField(spineJointsCount, query=True, value=True)), 0.1, R_clavicle)
+            base.move(0.1 * side, 1.5 + (0.25 * ReturnSpineAmount()), 0.1, R_clavicle)
             
             
             #Create R_UpperArm
@@ -169,7 +168,7 @@ def createArms(side):
             
 
             #move upper arm
-            base.move(0.35 * side, 1.5 + (0.25 * base.intField(spineJointsCount, query=True, value=True)), 0, R_upperArm)  
+            base.move(0.35 * side, 1.5 + (0.25 * ReturnSpineAmount()), 0, R_upperArm)  
             base.move(0.6 * side, 2, -0.2, R_Elbow)
             base.move(0.8 * side, 1.5, 0, R_Wrist)
             
@@ -186,7 +185,7 @@ def createHands(side, wrist):
             pos = base.xform(wrist, q=True, t=True, ws=True)
             base.move(pos[0], pos[1], pos[2], hand)
             base.parent(hand, 'Loc_L_Wrist')
-            for i in range(base.intField(fingerCount, query=True, value=True)):
+            for i in range(ReturnFingersAmount()):
                 createFingers(1,pos,i)
                 
            
@@ -199,7 +198,7 @@ def createHands(side, wrist):
             pos = base.xform(wrist, q=True, t=True, ws=True)
             base.move(pos[0], pos[1], pos[2], hand)
             base.parent(hand, 'Loc_R_Wrist')
-            for i in range(base.intField(fingerCount, query=True, value=True)):
+            for i in range(ReturnFingersAmount()):
                 createFingers(-1,pos,i)
                 
             
