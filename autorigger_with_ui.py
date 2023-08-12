@@ -41,11 +41,11 @@ class AutoRigger():
         
         
         base.separator(st = 'none')   
-        base.text(l = 'Prefix', w = 200)
-        self.prefix = base.textFieldGrp(w = 200, text = 'Put Your RIG Prefix Here', editable = True)
+        #base.text(l='Prefix', w=200, fn='boldLabelFont', bgc=[1, 0.5, 0])  # 设置字体样式为粗体，背景颜色为橘色
+        #self.prefix = base.textFieldGrp(w = 200, text = 'Put Your RIG Prefix Here', editable = True)
         base.separator(h=10)  
            
-        base.text(l = "Step 1: Create Locator", w = 100)
+        base.text(l = "Step 1: Create Locator", w = 100, fn='boldLabelFont', bgc=[1, 0.5, 0])
         base.separator(h = 5, st = 'none')
         
         #Sliders 4 Loc Stats
@@ -78,7 +78,7 @@ class AutoRigger():
   
         base.separator(h=10)  
         
-        base.text(l = "Step 2: Move Locs & Mirroring", w = 100)
+        base.text(l = "Step 2: Move Locs & Mirroring", w = 100 , fn='boldLabelFont', bgc=[1, 0.5, 0])
         
         base.separator(h = 5, st = 'none')
         
@@ -88,14 +88,14 @@ class AutoRigger():
         
         base.separator(h=10) 
         
-        base.text(l = "Step 3: Create Joints", w = 100)
+        base.text(l = "Step 3: Create Joints", w = 100 , fn='boldLabelFont', bgc=[1, 0.5, 0])
         base.separator(h = 5, st = 'none')
            
         base.button(l="Joints Creation Menu", w=200, c="Create_Joints.CreateJointWindows()")
         
         base.separator(h=10)       
       
-        base.text(l = "Step 4: Control and Constraint", w = 100)
+        base.text(l = "Step 4: Control and Constraint", w = 100 , fn='boldLabelFont', bgc=[1, 0.5, 0])
         
         base.separator(h = 5, st = 'none')
         
@@ -104,7 +104,7 @@ class AutoRigger():
         
         base.separator(h=10)       
       
-        base.text(l = "Step 5: Bind Skin", w = 100)
+        base.text(l = "Step 5: Bind Skin", w = 100 , fn='boldLabelFont', bgc=[1, 0.5, 0])
         
         base.separator(h = 5, st = 'none')
         
@@ -127,7 +127,7 @@ class AutoRigger():
         _spineCount = base.intSliderGrp(self.spineJointCount, q = True, v = True)
         _fingerCount = base.intSliderGrp(self.fingerCount, q = True, v = True) 
         Controllers.CreateController(_spineCount, _fingerCount)
-        CreateIK.IKHandles()
-        Constraints.CreateConstraints(_spineCount,_fingerCount)  
+        CreateIKH.IKHandles()
+        Create_Constraints.CreateConstraints(_spineCount,_fingerCount)  
 
   

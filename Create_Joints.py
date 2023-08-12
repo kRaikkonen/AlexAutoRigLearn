@@ -21,7 +21,7 @@ def CreateJointWindows():
     base.button(l="Delete Joints", w=200, c="Create_Joints.deleteJoints()")
     base.button(l = "Set Orientation", w = 200, c = "Create_Joints.setJointOrientation()")
     
-    base.button(l = "Create IK", w = 200, c = "CreateIKH.IKHandles()")
+    #base.button(l = "Create IK", w = 200, c = "CreateIKH.IKHandles()")
     
     base.showWindow()
 
