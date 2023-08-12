@@ -167,7 +167,7 @@ def CreateFingers(fingerCount):
 
         ri_finger = base.curve(p =[(0,0,0), (0,0,0.5), (0.2, 0, 0.7),(0,0,0.9), (-0.2, 0, 0.7), (0,0,0.5)], degree = 1, name = "CTRL_R_Finger_"+str(k))
         for l, fi in enumerate(R_Fingers):
-            fingerPos = base.xform(fi, q = True, t = True, ws = True)
+            fingerPos = base.xform(fi, q = True, t = True, ws = True) 
             fingerRot = base.joint(fi, q = True, o = True)
             base.scale(0.2, 0.2, 0.2, ri_finger)    
             base.move(fingerPos[0], fingerPos[1], fingerPos[2], ri_finger)

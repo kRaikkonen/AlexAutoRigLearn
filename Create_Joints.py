@@ -186,7 +186,7 @@ def createFinger(i):
     base.select("RIG_R_Wrist")
     r_allFingers = base.ls( "Loc_R_Finger_" + str(i) + "_*", type='transform')
     r_fingers = base.listRelatives(r_allFingers, p = True, s = False)
-    print ('fingers')    
+    print ('fingers created')    
     
     for y, g in enumerate(r_allFingers):
         
