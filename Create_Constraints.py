@@ -1,29 +1,39 @@
 import maya.cmds as base
 
+#import SetAttributes
 
-def createConstraint(fingerCount, spineAmount):
+#SetAttributes = reload(SetAttributes)
+
+def CreateConstraints(spineAmount,fingerCount):
     
-    #left Wrist
+    #left
     l_wristCtrl = base.ls("CTRL_L_Wrist", type = 'transform')
     l_wristIK = base.ls("IK_L_Arm")
     l_wristJoint = base.ls("RIG_L_Wrist")
+        
+
+    #right
+    r_wristCtrl = base.ls("CTRL_R_Wrist", type = 'transform')
+    r_wristIK = base.ls("IK_R_Arm")
+    r_wristJoint = base.ls("RIG_R_Wrist")
+    
     base.pointConstraint(l_wristCtrl, l_wristIK, mo = True)
     base.orientConstraint(l_wristCtrl, l_wristJoint, mo = True)
-    base.connectAttr("CTRL_L_Wrist.Elbow_PV","IK_L_Arm.twist")
+    base.connectAttr("CTRL_L_Wrist.Elbow_PV", "IK_L_Arm.twist")
+    
+    base.pointConstraint(r_wristCtrl, r_wristIK, mo = True)
+    base.orientConstraint(r_wristCtrl, r_wristJoint, mo = True)    
+    base.connectAttr("CTRL_R_Wrist.Elbow_PV", "IK_R_Arm.twist") 
     
     base.orientConstraint("CTRL_L_Clavicle", "RIG_L_Clavicle", mo = True)
     base.orientConstraint("CTRL_R_Clavicle", "RIG_R_Clavicle", mo = True)
     base.orientConstraint("CTRL_NECK", "RIG_Neck_Start", mo = True)
     base.orientConstraint("CTRL_HEAD", "RIG_Neck_End", mo = True)
     base.orientConstraint("CTRL_JAW", "RIG_Jaw_Start", mo = True)
+    if(base.objExists("CTRL_BREATHING")):
+        base.orientConstraint("CTRL_BREATHING", "RIG_BREATHING_START", mo = True)
     
-    #right
-    r_wristCtrl = base.ls("CTRL_R_Wrist", type = 'transform')
-    r_wristIK = base.ls("IK_R_Arm")
-    r_wristJoint = base.ls("RIG_R_Wrist")
-    base.pointConstraint(r_wristCtrl, r_wristIK, mo = True)
-    base.orientConstraint(r_wristCtrl, r_wristJoint, mo = True)
-    base.connectAttr("CTRL_R_Wrist.Elbow_PV","IK_R_Arm.twist")
+    base.connectAttr("CTRL_SPINE_"+str(spineAmount - 1)+".rotateY", "IK_Spine.twist")
     
     if base.objExists("RIG_L_ArmTwist_0"):
         l_twistJoints = base.ls("RIG_L_ArmTwist_*")
@@ -33,10 +43,8 @@ def createConstraint(fingerCount, spineAmount):
             base.setAttr(l_wristMultiply+".operation", 1)
             base.setAttr(l_wristMultiply+".input2Y", (1.0 - (1.0 / len(l_twistJoints) * (i + 1))) * -1)
             
-        #check connections
-            print (base.listConnections("L_ArmTwist_Node_"+str(i), plugs = True))
             
-            #input
+            #inputpr
             base.connectAttr("CTRL_L_Wrist.rotateY", "L_ArmTwist_Node_"+str(i)+".input1Y")
             #output
             base.connectAttr("L_ArmTwist_Node_"+str(i)+".outputY", "RIG_L_ArmTwist_"+str(i)+".rotateX")
@@ -55,9 +63,9 @@ def createConstraint(fingerCount, spineAmount):
     
     for j, cl in enumerate(clusters):
         if j > 0:
-            print (j)
+            
             base.parent(cl, spineCtrl[j - 1])
-            print (spineCtrl[j - 1])
+            
         else:
             base.parent(cl, "CTRL_PELVIS")     
             
@@ -65,8 +73,6 @@ def createConstraint(fingerCount, spineAmount):
     for k in range(0, fingerCount):
         l_allFingers = base.ls("RIG_L_Finger_"+str(k)+"_*")
         r_allFingers = base.ls("RIG_R_Finger_"+str(k)+"_*") 
-        
-        
         
         for l in range(0,3):
             if(k > 0):
@@ -78,69 +84,66 @@ def createConstraint(fingerCount, spineAmount):
                 base.connectAttr("CTRL_L_Finger_"+str(k)+"_"+str(l)+".rotateZ", l_allFingers[l]+".rotateZ")
                 base.connectAttr("CTRL_R_Finger_"+str(k)+"_"+str(l)+".rotateZ", r_allFingers[l]+".rotateZ")
                 base.connectAttr("CTRL_L_Finger_"+str(k)+"_"+str(l)+".rotateX", l_allFingers[l]+".rotateY")
-                base.connectAttr("CTRL_R_Finger_"+str(k)+"_"+str(l)+".rotateX", r_allFingers[l]+".rotateY") 
-        if base.objExists("RIG_L_INV_Heel"):
-            base.pointConstraint("RIG_L_INV_Toes", "IK_L_Toes", mo = True)
-            base.pointConstraint("RIG_L_INV_Ball", "IK_L_FootBall", mo = True)
-            base.pointConstraint("RIG_L_INV_Ankle", "IK_L_Leg", mo = True)
-            
-            base.pointConstraint("RIG_R_INV_Toes", "IK_R_Toes", mo = True)
-            base.pointConstraint("RIG_R_INV_Ball", "IK_R_FootBall", mo = True)
-            base.pointConstraint("RIG_R_INV_Ankle", "IK_R_Leg", mo = True)
-            
-            base.pointConstraint("CTRL_L_Foot", "RIG_L_INV_Heel", mo = True)
-            base.orientConstraint("CTRL_L_Foot", "RIG_L_INV_Heel", mo = True)
-            
-            base.pointConstraint("CTRL_R_Foot", "RIG_R_INV_Heel", mo = True)
-            base.orientConstraint("CTRL_R_Foot", "RIG_R_INV_Heel", mo = True)
-            
-            base.connectAttr("CTRL_L_Foot.Foot_Roll", "RIG_L_INV_Ball.rotateX")
-            base.connectAttr("CTRL_L_Foot.Ball_Roll", "RIG_L_INV_Toes.rotateX")
-            
-            base.connectAttr("CTRL_R_Foot.Foot_Roll", "RIG_R_INV_Ball.rotateX")
-            base.connectAttr("CTRL_R_Foot.Ball_Roll", "RIG_R_INV_Toes.rotateX")
-            
-           
-            
-        else:
-            base.parent("IK_L_Toes", "IK_L_FootBall")
-            base.parent("IK_L_FootBall", "IK_L_Leg")              
-            
-            base.parent("IK_R_Toes", "IK_R_FootBall")
-            base.parent("IK_R_FootBall", "IK_R_Leg")        
-            
-            base.pointConstraint("CTRL_R_Foot", "IK_R_Leg", mo = True)
-            base.orientConstraint("CTRL_R_Foot", "IK_R_Leg", mo = True)
-            
-            base.pointConstraint("CTRL_L_Foot", "IK_L_Leg", mo = True)
-            base.orientConstraint("CTRL_L_Foot", "IK_L_Leg", mo = True)
-            
+                base.connectAttr("CTRL_R_Finger_"+str(k)+"_"+str(l)+".rotateX", r_allFingers[l]+".rotateY")                
+               
+       
+    if base.objExists("RIG_L_INV_Heel"):
+        base.pointConstraint("RIG_L_INV_Toes", "IK_L_Toes", mo = True)
+        base.pointConstraint("RIG_L_INV_Ball", "IK_L_Ball", mo = True)
+        base.pointConstraint("RIG_L_INV_Ankle", "IK_L_Leg", mo = True)
         
-        #feet constraints    
+        base.pointConstraint("RIG_R_INV_Toes", "IK_R_Toes", mo = True)
+        base.pointConstraint("RIG_R_INV_Ball", "IK_R_Ball", mo = True)
+        base.pointConstraint("RIG_R_INV_Ankle", "IK_R_Leg", mo = True)
         
-        #lleft
-        base.setAttr("IK_L_Leg.poleVectorX", 1)
-        base.setAttr("IK_L_Leg.poleVectorZ", 0)
-        l_footAverage = base.shadingNode("plusMinusAverage", asUtility = True, n = "L_Foot_Node") 
-        base.setAttr(l_footAverage+".operation", 2)   
-        base.connectAttr("CTRL_L_Foot.Knee_Fix", l_footAverage+".input1D[0]")
-        base.connectAttr("CTRL_L_Foot.Knee_Twist", l_footAverage+".input1D[1]")  
-        base.connectAttr(l_footAverage+".output1D", "IK_L_Leg.twist")  
-        base.setAttr("CTRL_L_Foot.Knee_Fix", 90)
+        base.pointConstraint("CTRL_L_Foot", "RIG_L_INV_Heel", mo = True)
+        base.orientConstraint("CTRL_L_Foot", "RIG_L_INV_Heel", mo = True)
         
-        #right
-        base.setAttr("IK_R_Leg.poleVectorX", 1)
-        base.setAttr("IK_R_Leg.poleVectorZ", 0)
-        r_footAverage = base.shadingNode("plusMinusAverage", asUtility = True, n = "R_Foot_Node") 
-        base.setAttr(r_footAverage+".operation", 2)   
-        base.connectAttr("CTRL_R_Foot.Knee_Fix", r_footAverage+".input1D[0]")
-        base.connectAttr("CTRL_R_Foot.Knee_Twist", r_footAverage+".input1D[1]")  
-        base.connectAttr(r_footAverage+".output1D", "IK_R_Leg.twist")  
-        base.setAttr("CTRL_R_Foot.Knee_Fix", 90)
+        base.pointConstraint("CTRL_R_Foot", "RIG_R_INV_Heel", mo = True)
+        base.orientConstraint("CTRL_R_Foot", "RIG_R_INV_Heel", mo = True)
         
-        SetAttributes.LockAttributes()    
-
+        base.connectAttr("CTRL_L_Foot.Foot_Roll", "RIG_L_INV_Ball.rotateX")
+        base.connectAttr("CTRL_L_Foot.Ball_Roll", "RIG_L_INV_Toes.rotateX")
         
+        base.connectAttr("CTRL_R_Foot.Foot_Roll", "RIG_R_INV_Ball.rotateX")
+        base.connectAttr("CTRL_R_Foot.Ball_Roll", "RIG_R_INV_Toes.rotateX")
         
+       
         
-            
+    else:
+        base.parent("IK_L_Toes", "IK_L_Ball")
+        base.parent("IK_L_Ball", "IK_L_Leg")              
+        
+        base.parent("IK_R_Toes", "IK_R_Ball")
+        base.parent("IK_R_Ball", "IK_R_Leg")        
+        
+        base.pointConstraint("CTRL_R_Foot", "IK_R_Leg", mo = True)
+        base.orientConstraint("CTRL_R_Foot", "IK_R_Leg", mo = True)
+        
+        base.pointConstraint("CTRL_L_Foot", "IK_L_Leg", mo = True)
+        base.orientConstraint("CTRL_L_Foot", "IK_L_Leg", mo = True)
+        
+    
+    #feet constraints    
+    
+    #lleft
+    base.setAttr("IK_L_Leg.poleVectorX", 1)
+    base.setAttr("IK_L_Leg.poleVectorZ", 0)
+    l_footAverage = base.shadingNode("plusMinusAverage", asUtility = True, n = "L_Foot_Node") 
+    base.setAttr(l_footAverage+".operation", 2)   
+    base.connectAttr("CTRL_L_Foot.Knee_Fix", l_footAverage+".input1D[0]")
+    base.connectAttr("CTRL_L_Foot.Knee_Twist", l_footAverage+".input1D[1]")  
+    base.connectAttr(l_footAverage+".output1D", "IK_L_Leg.twist")  
+    base.setAttr("CTRL_L_Foot.Knee_Fix", 90)
+    
+    #right
+    base.setAttr("IK_R_Leg.poleVectorX", 1)
+    base.setAttr("IK_R_Leg.poleVectorZ", 0)
+    r_footAverage = base.shadingNode("plusMinusAverage", asUtility = True, n = "R_Foot_Node") 
+    base.setAttr(r_footAverage+".operation", 2)   
+    base.connectAttr("CTRL_R_Foot.Knee_Fix", r_footAverage+".input1D[0]")
+    base.connectAttr("CTRL_R_Foot.Knee_Twist", r_footAverage+".input1D[1]")  
+    base.connectAttr(r_footAverage+".output1D", "IK_R_Leg.twist")  
+    base.setAttr("CTRL_R_Foot.Knee_Fix", 90)
+    
+    #SetAttributes.LockAttributes()    

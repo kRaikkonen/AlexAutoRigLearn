@@ -29,6 +29,8 @@ def createLocators(spineValue, fingerValue):
     base.scale(0.1, 0.1, 0.1, root)
     base.move(0, 1.5, 0, root)
     base.parent(root, "Loc_Master")
+    
+   
     createSpine()
     
 def ReturnSpineAmount():
@@ -334,6 +336,9 @@ def mirrorLocators(side):
         for i,l in enumerate(RightLocators):
             pos = base.xform(l, q = True, t =True,ws = True)
             base.move(-pos[0],pos[1],pos[2],LeftLocators[i])
+
+
+
         
        
     

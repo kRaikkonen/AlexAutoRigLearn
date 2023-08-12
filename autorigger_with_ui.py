@@ -77,7 +77,7 @@ class AutoRigger():
         base.text(l = "Step 4: Control and Constraint", w = 100)
         base.button(l="Create Controllers", w=200, c="Controllers.CreateController("+ str(base.intField(spineJointCount, query = True, value = True))+","+str(base.intField(fingerCount, query = True, value = True))+")")
         
-        base.button(l="Create Constraint", w=200, c="Create_Constraints.createConstraint("+ str(base.intField(spineJointCount, query = True, value = True))+","+str(base.intField(fingerCount, query = True, value = True))+")")
+        base.button(l="Create Constraint", w=200, c="Create_Constraints.CreateConstraints("+ str(base.intField(spineJointCount, query = True, value = True))+","+str(base.intField(fingerCount, query = True, value = True))+")")
         base.separator()
         base.separator()
         
