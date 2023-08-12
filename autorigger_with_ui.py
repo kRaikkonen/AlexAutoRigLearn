@@ -34,53 +34,81 @@ class AutoRigger():
 
     def CreateUI(self):
         
-        base.window("Auto Rigger")
+        base.window("Alex Auto Rigger")
         
         base.rowColumnLayout(adj = True)
         
+        
+        
+        base.separator(st = 'none')   
+        base.text(l = 'Prefix', w = 200)
+        self.prefix = base.textFieldGrp(w = 200, text = 'Put Your RIG Prefix Here', editable = True)
+        base.separator(h=10)  
+           
         base.text(l = "Step 1: Create Locator", w = 100)
-        base.separator()
+        base.separator(h = 5, st = 'none')
+        
+        #Sliders 4 Loc Stats
+        
+        self.spineJointCount = base.intSliderGrp(l = "Spine Count", min = 1, max = 10, value = 4, step = 1, field = True)
+        self.fingerCount = base.intSliderGrp(l = "Finger Count", min = 1, max = 10, value = 5, step = 1, field = True)
+        
+        base.separator(h = 2, st = 'none') 
         
         
-        base.text(l = "Amount of Spines", w = 100)
-        spineJointCount = base.intField(minValue = 1, maxValue = 10, value = 4)
-        spineValue = base.intField(spineJointCount, query = True, value = True)
-        base.text(l = "Amount of Fingers", w = 100)
-        fingerCount = base.intField(minValue = 0, maxValue = 10, value = 5)
+        #Double ELB
+        #self.doubleElbow = base.checkBox(l = 'Double Elbow', align = 'left' )   
         
-        
-        
-        base.button(l="Create Locators", w=200, c="Create_Locators.createLocators("+ str(base.intField(spineJointCount, query = True, value = True))+","+str(base.intField(fingerCount, query = True, value = True))+")")
-        base.button(l="Delete Locators", w=200, c="Create_Locators.deleteLocators()")
-      
-        ##Create_Locators.createField()
-        
-        
-        base.separator()
-        base.separator()
-  
-  
-        base.text(l = "Step 2: Twist & Mirroring", w = 100)
+        base.separator(h = 10, st = 'none') 
+        base.button(l = "Create Locators", w = 200, c = self.DoLocators)
         base.button(l="Twist & Reverse Foot Locator Menu", w=200, c="Twist_Loc.LimbTwistLocatorsCreation()") 
+        
+        base.button(l="Delete All Locators", w=200, c="Create_Locators.deleteLocators()")
+        base.separator(st = 'none') 
+        
+       
+        
+        
+      
+        
+        
+        
+        base.separator(st = 'none')   
+        base.separator(st = 'none')   
+  
+        base.separator(h=10)  
+        
+        base.text(l = "Step 2: Move Locs & Mirroring", w = 100)
+        
+        base.separator(h = 5, st = 'none')
+        
         base.button(l="Mirror L -> R", w=200, c="Create_Locators.mirrorLocators(1)")
         base.button(l="Mirror R -> L", w=200, c="Create_Locators.mirrorLocators(-1)")
-        base.separator()
-        base.separator()
+          
+        
+        base.separator(h=10) 
         
         base.text(l = "Step 3: Create Joints", w = 100)
-        base.separator()
+        base.separator(h = 5, st = 'none')
+           
         base.button(l="Joints Creation Menu", w=200, c="Create_Joints.CreateJointWindows()")
         
-        base.separator()
-        base.separator()    
+        base.separator(h=10)       
       
         base.text(l = "Step 4: Control and Constraint", w = 100)
-        base.button(l="Create Controllers", w=200, c="Controllers.CreateController("+ str(base.intField(spineJointCount, query = True, value = True))+","+str(base.intField(fingerCount, query = True, value = True))+")")
         
-        base.button(l="Create Constraint", w=200, c="Create_Constraints.CreateConstraints("+ str(base.intField(spineJointCount, query = True, value = True))+","+str(base.intField(fingerCount, query = True, value = True))+")")
-        base.separator()
-        base.separator()
+        base.separator(h = 5, st = 'none')
         
+        base.button(l = "Controller Constraint", w = 200, c = self.FinalizeRig)
+        
+        
+        base.separator(h=10)       
+      
+        base.text(l = "Step 5: Bind Skin", w = 100)
+        
+        base.separator(h = 5, st = 'none')
+        
+        base.button(l = "Bind Skin", w = 200, c = "Create_Constraints.BindSkin()")
         
         
         
@@ -88,7 +116,18 @@ class AutoRigger():
         
         base.showWindow()
     
+    def DoLocators(self, void):
+        temp_spineCount = base.intSliderGrp(self.spineJointCount, q = True, v = True)
+        temp_fingerCount = base.intSliderGrp(self.fingerCount, q = True, v = True)
+        #_doubleElbow = base.checkBox(self.doubleElbow, q = True, v = True)
+        Create_Locators.createLocators(temp_spineCount, temp_fingerCount)    
+ 
+    def FinalizeRig(self, void):
     
-    
+        _spineCount = base.intSliderGrp(self.spineJointCount, q = True, v = True)
+        _fingerCount = base.intSliderGrp(self.fingerCount, q = True, v = True) 
+        Controllers.CreateController(_spineCount, _fingerCount)
+        CreateIK.IKHandles()
+        Constraints.CreateConstraints(_spineCount,_fingerCount)  
 
   
