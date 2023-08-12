@@ -1,8 +1,6 @@
 import maya.cmds as base
 
-#import SetAttributes
 
-#SetAttributes = reload(SetAttributes)
 
 def CreateConstraints(spineAmount,fingerCount):
     
@@ -146,4 +144,30 @@ def CreateConstraints(spineAmount,fingerCount):
     base.connectAttr(r_footAverage+".output1D", "IK_R_Leg.twist")  
     base.setAttr("CTRL_R_Foot.Knee_Fix", 90)
     
-    #SetAttributes.LockAttributes()    
+def BindSkin():
+    sel = base.ls(sl = True)
+    if (len(sel) == 0):
+        base.confirmDialog(title = "Empty Selection", message = "Mesh Requiered", button = ['Ok'])
+    else:
+        for i in range(0, len(sel)):
+            base.skinCluster(sel[i], "RIG_ROOT", bm = 3, sm = 1, dr = 0.1, name = "Mesh"+str(i))
+            base.geomBind('Mesh'+str(i), bm = 3, gvp = [256, 1])   
+    
+     
+
+    if (base.objExists("RIG_LAYER")):
+        _rig = base.select("RIG") 
+        base.editDisplayLayerMembers("RIG_LAYER", "RIG")
+    else:   
+        _rig = base.select("RIG") 
+        base.createDisplayLayer(nr = True, name = "RIG_LAYER")        
+    
+    _ik = base.ls("IK_*")
+    base.editDisplayLayerMembers("RIG_LAYER", _ik)
+    
+
+    if (base.objExists("CONTROLLERS")):
+        base.editDisplayLayerMembers("CONTROLLERS", "MASTER_CONTROLLER")
+    else:
+        _ctrl = base.select("MASTER_CONTROLLER")    
+        base.createDisplayLayer(nr = True, name = "CONTROLLERS")

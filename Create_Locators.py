@@ -1,7 +1,9 @@
 import maya.cmds as base
 
+import Twist_Loc
+import importlib
 
-
+Twist_Loc = importlib.reload(Twist_Loc)
 
 
 
@@ -345,3 +347,8 @@ def mirrorLocators(side):
 def deleteLocators():
     nodes = base.ls("Loc_*")
     base.delete(nodes)
+    if base.objExists("TwistNRev"):
+        
+        base.delete(base.ls('TwistNRev'))
+    else:
+        pass

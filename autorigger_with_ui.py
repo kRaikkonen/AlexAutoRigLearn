@@ -14,7 +14,7 @@ import importlib
 Create_Locators = importlib.reload(Create_Locators)
 Create_Joints = importlib.reload(Create_Joints)
 Create_Constraints = importlib.reload(Create_Constraints)
-Twist_Loc = importlib.reload(Twist_Loc)
+
 CreateIKH = importlib.reload(CreateIKH)
 Controllers = importlib.reload(Controllers)
 
@@ -61,7 +61,7 @@ class AutoRigger():
         
         base.separator(h = 10, st = 'none') 
         base.button(l = "Create Locators", w = 200, c = self.DoLocators)
-        base.button(l="Twist & Reverse Foot Locator Menu", w=200, c="Twist_Loc.LimbTwistLocatorsCreation()") 
+        base.button(l="Twist & Reverse Foot Locator Menu", w=200, c="Twist_Loc.TwistNreverse()") 
         
         base.button(l="Delete All Locators", w=200, c="Create_Locators.deleteLocators()")
         base.separator(st = 'none') 
