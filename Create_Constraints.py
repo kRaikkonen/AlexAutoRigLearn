@@ -169,5 +169,5 @@ def BindSkin():
     if (base.objExists("CONTROLLERS")):
         base.editDisplayLayerMembers("CONTROLLERS", "MASTER_CONTROLLER")
     else:
-        _ctrl = base.select("MASTER_CONTROLLER")    
+        _ctrl = base.select("Main_CTRL")    
         base.createDisplayLayer(nr = True, name = "CONTROLLERS")
